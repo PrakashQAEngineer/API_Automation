@@ -7,6 +7,8 @@ import static  io.restassured.RestAssured.*;
 //import org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.equalTo;
 
+import org.testng.Assert;
+
 
 public class PostGetUpdate 
 {
@@ -38,6 +40,7 @@ public class PostGetUpdate
 		
 		//UPDATE Method
 		
+		String newAddr = "Bhoot Bangla";
 		String up_data = given().queryParam("key", "qaclick123").header("Content-Type","application/json")
 		.body(UpdateBody.Updatedata()).when().put("maps/api/place/update/json").then().assertThat().statusCode(200)
 		.body("msg", equalTo("Address successfully updated")).header("Server", "Apache/2.4.52 (Ubuntu)").extract().response()
@@ -45,9 +48,11 @@ public class PostGetUpdate
 		
 		System.out.println("The Updated data: "+up_data);
 		
-		JsonPath jss = new JsonPath(up_data);
-		String res_out = jss.getString("msg");
+		JsonPath js1 = ReuseableMethod.RawToJson(up_data);
+		String res_out = js1.getString("msg");
 		System.out.println(res_out);
+		
+		
 		
 		//GET Method after Update
 		String gettData = given().queryParam("place_id", ""+placeId+"").queryParam("key", "qaclick123")
@@ -55,6 +60,11 @@ public class PostGetUpdate
 				.assertThat().statusCode(200).body("name", equalTo("Sparsh Yog")).extract().response().asString();
 				
 				System.out.println("After Update:  "+gettData);
+				
+				JsonPath js2 = ReuseableMethod.RawToJson(gettData);
+				String validNewAddress = js2.getString("address");
+				
+				Assert.assertEquals(newAddr, validNewAddress);
 		
 		
 	}
