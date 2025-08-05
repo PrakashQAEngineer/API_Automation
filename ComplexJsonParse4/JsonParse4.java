@@ -8,6 +8,7 @@ public class JsonParse4
 	{
 		JsonPath js = new JsonPath(PayloadData.payData());
 		
+		String sub_Copies = "Cypress";
 		//Print no of courses returned by API
 		int count = js.getInt("courses.size()");
 		System.out.println(count);
@@ -31,6 +32,19 @@ public class JsonParse4
 			int price  = js.getInt("courses["+i+"].price");
 			System.out.println("The tile of the course is :  "+title);
 			System.out.println("The Price of the course is : "+price);
+		}
+		
+		//Print no of copies sold by RPA course
+		
+		for(int i=0;i<count;i++)
+		{
+			String title = js.getString("courses["+i+"].title");
+			if(title.equalsIgnoreCase(sub_Copies))
+			{
+				int cop = js.getInt("courses["+i+"].copies");
+				System.out.println("Total copies sold by "+sub_Copies+" is: "+cop);
+				break;
+			}
 		}
 	}
 	
