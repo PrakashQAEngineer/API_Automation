@@ -33,7 +33,14 @@ public class AllMethodin1
 	   .body(updateAllMethodin1.updateAllMethodin11()).when().put("maps/api/place/update/json").then().log().all()
 	   .assertThat().statusCode(200);
 	   
+	   /// Get Method
+	   System.out.println("************************This is the Get Method***************************************");
 	   
-	}
+	   String gettResponse = given().log().all().queryParam("place_id", place).queryParam("key","qaclick123").header("Accept", "*/*").when().get("maps/api/place/get/json")
+	   .then().log().all().assertThat().statusCode(200).extract().response().asString();
+	   
+	   System.out.println(gettResponse);
+	   }
 
+	   
 }
