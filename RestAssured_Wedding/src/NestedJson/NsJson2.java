@@ -15,7 +15,25 @@ public class NsJson2
 		System.out.println("the totasl no of amounts are: "+prcamt);
 
 		String fstTitle = js.getString("courses.title[0]");
-		System.out.println("the titlew of the first course is: "+fstTitle);
+		System.out.println("the title of the first course is: "+fstTitle);
+		
+		//print all cources title and their prices
+		
+		for(int i=0; i<countCourse;i++)
+		{
+			String cr_title = js.getString("courses.title["+i+"]");
+			int cr_price = js.getInt("courses.price["+i+"]");
+			
+			System.out.println("The title of the price is: "+cr_title+ " And the price is: "+cr_price);
+			
+			// no of copies sold by rpa
+			if(cr_title.contains("RPA"))
+			{
+				int rpa_copy = js.getInt("courses.copies["+i+"]");
+						System.out.println("the no of copies sold by RPA is: "+rpa_copy);
+						break;
+			}
+		}
 	}
 
 }
