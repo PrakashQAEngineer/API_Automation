@@ -1,5 +1,7 @@
 package NestedJson;
 
+import org.testng.Assert;
+
 import Payload.NsJson2_Body_Course;
 import io.restassured.path.json.JsonPath;
 
@@ -34,6 +36,21 @@ public class NsJson2
 						break;
 			}
 		}
+		int cp=0,cc=0, total=0;
+		//count of all course price
+		for(int i=0;i<countCourse;i++)
+		{
+			 cp = js.getInt("courses.price["+i+"]");
+			 cc  = js.getInt("courses.copies["+i+"]");
+			total = total + cp*cc;
+		}
+		
+		System.out.println("Total: "+total);
+		
+		int actprice = js.getInt("dashboard.purchaseAmount");
+		
+		System.out.println("the actual price is: "+actprice);
+		Assert.assertEquals(actprice, total);
 	}
 
 }
