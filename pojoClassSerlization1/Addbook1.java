@@ -1,6 +1,11 @@
 package pojoClassSerlization1;
 
 import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 import java.util.ArrayList;
@@ -13,7 +18,7 @@ public class Addbook1
 	
 	public static void main(String args[])
 	{
-		RestAssured.baseURI = "https://rahulshettyacademy.com";
+		
 		
 		//Serlization
 		AddPlace1 a1 = new AddPlace1();
@@ -36,12 +41,18 @@ public class Addbook1
          a1.setLocation(l1);
          
          
-		given().log().all().queryParam("key", "qaclick123")
-		.header("Content-Type", "application/json")
-		.body(a1)
-		.when().post("/maps/api/place/add/json")
-		.then().log().all().assertThat().statusCode(200).body("scope", equalTo("APP")).body("status", equalTo("OK"));
+         
+        RequestSpecification rq = new  RequestSpecBuilder().setBaseUri("https://rahulshettyacademy.com").addQueryParam("key", "qaclick123")
+        .addHeader("Content-Type", "application/json").build();
+        
+      ResponseSpecification res =   new ResponseSpecBuilder().expectStatusCode(200)
+                                 .expectBody("scope", equalTo("APP")).build();
+        
+		RequestSpecification rqq = given().log().all().spec(rq)
+		.body(a1);
 		
+		rqq.when().post("/maps/api/place/add/json")
+		.then().log().all().assertThat().spec(res);
 	}
 
 }
