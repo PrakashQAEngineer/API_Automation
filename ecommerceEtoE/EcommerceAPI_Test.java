@@ -84,6 +84,14 @@ public class EcommerceAPI_Test
 	    	String addprdid = js.getString("productOrderId");
 	    	
 	    	System.out.println("The order Id is: "+order+ "and the ProductOrderId is: "+addprdid);
+	    	
+	    	
+	    	System.out.println("***********************Delete ****************************");
+	    	//Delete the Product
+	    	RequestSpecification rq_del = new RequestSpecBuilder().addHeader("Authorization", token).setBaseUri("https://rahulshettyacademy.com").build();
+	    	given().log().all().spec(rq_del).pathParam("ProductId", prdId).when()
+	    	.delete("/api/ecom/product/delete-product/{ProductId}").then().log().all().assertThat()
+	    	.statusCode(200).body("message", equalTo("Product Deleted Successfully"));
 	}
 
 }
